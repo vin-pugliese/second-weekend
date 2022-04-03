@@ -2,13 +2,13 @@
 .idea/
 target
 
-
+src/main/resources/login.properties
 
 
 # Compiled class file
 *.class
 
-# Log file
+# utils.Log file
 *.log
 
 # BlueJ files
