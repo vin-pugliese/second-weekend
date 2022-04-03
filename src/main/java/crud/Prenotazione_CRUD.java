@@ -1,6 +1,9 @@
 package crud;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import bean.Prenotazione;
@@ -115,35 +118,27 @@ public class Prenotazione_CRUD extends DBUtils {
 
     private int disponibilitaTavolo(Prenotazione x){
 
-        ArrayList<Tavolo> tavoli = new ArrayList<Tavolo>();
+        ArrayList<Tavolo> tavoli = getTables(x);
         try {
             conn = this.startConnection();
-            ps = conn.prepareStatement("SELECT * FROM tavolo WHERE capienza >=" + x.getNumPersone());
-
+            java.sql.Date sqlDate = new java.sql.Date(x.getDate().getTime());
+            ps = conn.prepareStatement("SELECT * FROM restaurant.prenotazione inner join restaurant.tavolo on prenotazione.numerotavolo = tavolo.numero WHERE tavolo.capienza = " +x.getNumPersone() + " AND prenotazione.datas = '" +sqlDate +"' ;");
             rs = ps.executeQuery();
 
             while(rs.next()) {
-                Tavolo tmp = new Tavolo(rs.getInt(1), rs.getInt(2));
-                tavoli.add(tmp);
-            }
-            rs.close();
-
-            ps.clearParameters();
-            java.sql.Date sqlDate = new java.sql.Date(x.getDate().getTime());
-            ps = conn.prepareStatement("SELECT * FROM restaurant.prenotazione inner join restaurant.tavolo on prenotazione.numerotavolo = tavolo.numero WHERE tavolo.capienza >= " +x.getNumPersone() + " AND prenotazione.data = " +sqlDate);
-            rs = ps.executeQuery();
-
-            for(int i=0; rs.next(); i++){
-                if(tavoli.get(i).getNumero() == rs.getInt(5))
-                    tavoli.remove(i);
+                for (int i = 0; i < tavoli.size(); i++) {
+                    if (tavoli.get(i).getNumero() == rs.getInt(6)) {
+                        tavoli.remove(i);
+                        i -= 1;
+                    }
+                }
             }
 
             if (tavoli.isEmpty()) return 0;
             else {
-               Tavolo res = tavoli.get(tavoli.size()-1);
+               Tavolo res = tavoli.get(0);
                return res.getNumero();
             }
-
 
         } catch(IOException | SQLException e) {
             e.printStackTrace();
@@ -153,6 +148,33 @@ public class Prenotazione_CRUD extends DBUtils {
     }
 
 
+
+    private ArrayList<Tavolo> getTables(Prenotazione x){
+
+        ResultSet rs3 = null;
+        ArrayList<Tavolo> tavoli = new ArrayList<Tavolo>();
+        try {
+
+            conn = this.startConnection();
+            ps = conn.prepareStatement("SELECT * FROM restaurant.tavolo WHERE tavolo.capienza =" + x.getNumPersone() + " ;");
+
+            rs3 = ps.executeQuery();
+
+            while (rs3.next()) {
+                Tavolo tmp = new Tavolo();
+                tmp.setNumero(rs3.getInt(1));
+                tmp.setCapienza(rs3.getInt(2));
+                tavoli.add(tmp);
+            }
+            for (Tavolo tav : tavoli)
+                System.out.println(tav.toString());
+
+            ps.clearParameters();
+        } catch(IOException | SQLException e){
+            e.printStackTrace();
+        } finally {this.closeAll();}
+        return tavoli;
+    }
 
     /**
      * @param date
@@ -165,4 +187,20 @@ public class Prenotazione_CRUD extends DBUtils {
         java.sql.Date date1 = new java.sql.Date(timeInMilliSeconds);
         return date1;
     }
+
+
+    public void printOnFile(){
+
+        try {
+            FileInputStream in = new FileInputStream("src/main/resources/prenotazione.txt");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+
+
+
+    }
+
+
 }

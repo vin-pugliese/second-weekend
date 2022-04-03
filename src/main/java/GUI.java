@@ -73,6 +73,7 @@ public class GUI {
                     tc.delete(sc.nextInt());
                     break;
                 case 8:
+                    sc.nextLine();      //workaround that prevents scanner from skipping inputs
                     System.out.println("Inserisci il cognome della prenotazione da eliminare:");
                     pc.delete(sc.nextLine());
                     break;
@@ -101,7 +102,7 @@ public class GUI {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
+        x.toString();
         return x;
     }
 }
