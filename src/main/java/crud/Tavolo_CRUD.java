@@ -1,7 +1,7 @@
-package utils;
+package crud;
 
-import bean.Prenotazione;
 import bean.Tavolo;
+import utils.DBUtils;
 
 import java.io.IOException;
 import java.sql.SQLException;
