@@ -1,8 +1,6 @@
 package crud;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -190,12 +188,32 @@ public class Prenotazione_CRUD extends DBUtils {
 
 
     public void printOnFile(){
-
         try {
-            FileInputStream in = new FileInputStream("src/main/resources/prenotazione.txt");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            File x = new File("src/main/resources/prenotazioni.txt");
+            FileWriter fileWriter = new FileWriter(x, true);
+            PrintWriter outputStream = new PrintWriter(fileWriter);
+            outputStream.println(String.format("%-20s %-20s %-20s %-20s %-20s", "Cognome", "N. persone", "recapito", "data", "num. tavolo"));
+
+            conn = this.startConnection();
+
+            statement = conn.createStatement();
+
+            rs = statement.executeQuery(rp2.getProperties().getProperty("selectPrenotazione"));
+
+            while(rs.next()){
+                outputStream.println(String.format("%-20s %-20s %-20s %-20s %-20s", rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5)));
+            }
+
+            fileWriter.flush();
+            fileWriter.close();
+
+            rs.close();
+        } catch (IOException | SQLException e) {
+            e.getMessage();
+        } finally {
+            this.closeAll();
         }
+
 
 
 

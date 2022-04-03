@@ -78,6 +78,7 @@ public class GUI {
                     pc.delete(sc.nextLine());
                     break;
                 case -1:
+                    pc.printOnFile();
                     System.exit(0);
             }
         } while (x != -1);

@@ -1,12 +1,4 @@
-import bean.Prenotazione;
-import bean.Tavolo;
-import crud.Prenotazione_CRUD;
-import crud.Tavolo_CRUD;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Scanner;
+import crud.DBCreator;
 
 public class Test {
 

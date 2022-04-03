@@ -1,0 +1,5 @@
+
+Cognome              N. persone           recapito             data                 num. tavolo         
+enzo                 4                    665999888            2022-04-05           1                   
+pugliese             10                   333444555            2022-01-01           5                   
+vincenzo             10                   555444999            2022-01-01           6                   
