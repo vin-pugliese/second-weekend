@@ -54,7 +54,7 @@ public class Prenotazione_CRUD extends DBUtils {
         try {
             conn = this.startConnection();
 
-            ps = conn.prepareStatement(rp.getProperties().getProperty("updatePrenotazione"));
+            ps = conn.prepareStatement(rp2.getProperties().getProperty("updatePrenotazione"));
 
             ps.setString(1, x.getCognome());
             ps.setInt(2, x.getNumPersone());
@@ -78,7 +78,7 @@ public class Prenotazione_CRUD extends DBUtils {
         try {
             conn = this.startConnection();
 
-            ps = conn.prepareStatement(rp.getProperties().getProperty("deletePrenotazione"));
+            ps = conn.prepareStatement(rp2.getProperties().getProperty("deletePrenotazione"));
             ps.setString(1, cognome);
 
             if (ps.executeUpdate() != 0) L.info("Eliminato " +cognome);
@@ -100,7 +100,7 @@ public class Prenotazione_CRUD extends DBUtils {
 
             statement = conn.createStatement();
 
-            rs = statement.executeQuery(rp.getProperties().getProperty("selectPrenotazione"));
+            rs = statement.executeQuery(rp2.getProperties().getProperty("selectPrenotazione"));
 
             this.printer(rs);
             rs.close();
@@ -129,7 +129,8 @@ public class Prenotazione_CRUD extends DBUtils {
             rs.close();
 
             ps.clearParameters();
-            ps = conn.prepareStatement("SELECT * FROM restaurant.prenotazione inner join restaurant.tavolo on prenotazione.numerotavolo = tavolo.numero WHERE tavolo.capienza >=" +x.getNumPersone() + "AND prenotazione.data = " + x.getDate());
+            java.sql.Date sqlDate = new java.sql.Date(x.getDate().getTime());
+            ps = conn.prepareStatement("SELECT * FROM restaurant.prenotazione inner join restaurant.tavolo on prenotazione.numerotavolo = tavolo.numero WHERE tavolo.capienza >= " +x.getNumPersone() + " AND prenotazione.data = " +sqlDate);
             rs = ps.executeQuery();
 
             for(int i=0; rs.next(); i++){
@@ -139,7 +140,7 @@ public class Prenotazione_CRUD extends DBUtils {
 
             if (tavoli.isEmpty()) return 0;
             else {
-               Tavolo res = tavoli.get(tavoli.size());
+               Tavolo res = tavoli.get(tavoli.size()-1);
                return res.getNumero();
             }
 

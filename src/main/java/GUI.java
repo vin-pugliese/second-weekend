@@ -62,7 +62,8 @@ public class GUI {
                     tc.insert(t);
                     break;
                 case 6:
-                    System.out.println("Inserisci il cognome della prenotazione da modificare");
+                    sc.nextLine();      //workaround that prevents scanner from skipping inputs
+                    System.out.println("Inserisci il cognome della prenotazione");
                     p.setCognome(sc.nextLine());
                     p = this.prenotazioneQuestions(p);
                     pc.insert(p);
@@ -87,6 +88,7 @@ public class GUI {
         System.out.println("inserisci numero persone");
         x.setNumPersone(sc.nextInt());
 
+        sc.nextLine();      //workaround that prevents scanner from skipping inputs
         System.out.println("Inserisci cellulare");
         x.setCell(sc.nextLine());
 
@@ -99,9 +101,6 @@ public class GUI {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
-        System.out.println("Inserisci numero tavolo");
-        x.setNumTavolo(sc.nextInt());
 
         return x;
     }

@@ -42,7 +42,7 @@ public class Tavolo_CRUD extends DBUtils {
         try {
             conn = this.startConnection();
 
-            ps = conn.prepareStatement(rp.getProperties().getProperty("updateTavolo"));
+            ps = conn.prepareStatement(rp2.getProperties().getProperty("updateTavolo"));
 
             ps.setInt(5, x.getCapienza());
 
@@ -62,7 +62,7 @@ public class Tavolo_CRUD extends DBUtils {
         try {
             conn = this.startConnection();
 
-            ps = conn.prepareStatement(rp.getProperties().getProperty("deleteTavolo"));
+            ps = conn.prepareStatement(rp2.getProperties().getProperty("deleteTavolo"));
             ps.setInt(1, numero);
 
             if (ps.executeUpdate() != 0) L.info("Eliminato " +numero);
@@ -84,7 +84,7 @@ public class Tavolo_CRUD extends DBUtils {
 
             statement = conn.createStatement();
 
-            rs = statement.executeQuery(rp.getProperties().getProperty("selectTavolo"));
+            rs = statement.executeQuery(rp2.getProperties().getProperty("selectTavolo"));
 
             this.printer(rs);
             rs.close();
