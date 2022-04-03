@@ -26,13 +26,12 @@ public class DBUtils {
 
     /**
      * Inizializza una nuova connessione prendendo l'url del database dal file passato come parametro
-     * @param file
+
      * @return
      * @throws IOException
      */
-    public Connection startConnection(String file) throws IOException {
+    public Connection startConnection() throws IOException {
         Connection conn = null;
-        rp2.read(file);
         try {
             Class.forName(rp.getDbdriver()).newInstance();
             conn = DriverManager.getConnection(rp2.getDburl(), rp.getUser(), rp.getPsw());
